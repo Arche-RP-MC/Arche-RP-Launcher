@@ -1,5 +1,5 @@
-const { config, status_server, crypt } = require('./assets/js/utils.js');
-const { MCLaunch, MCAuth } = require('emc-core-luuxis');
+const { config, status_server } = require('./assets/js/utils.js');
+const { MCLaunch } = require('emc-core-luuxis');
 const dataDirectory = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Application Support' : process.env.HOME)
 const launcher = new MCLaunch;
 
@@ -27,13 +27,30 @@ config.info().then(config => {
     })
 })
 
+function web_site(){
+  config.info().then(info => {
+    nw.Shell.openExternal(info.site)
+  })
+}
+
+function discord(){
+  config.info().then(info => {
+    nw.Shell.openExternal(info.discord)
+  })
+}
+
+function youtube(){
+  config.info().then(info => {
+    nw.Shell.openExternal(info.youtube)
+  })
+}
+
 function play(){
     config.config().then(config => {
         document.querySelector(".config").style.display = "none";
         document.querySelector(".info-progress").style.display = "block";
         const max_ram = document.getElementById("ram").value
-        const login = require(dataDirectory + "/" + config.dataDirectory + "/login.json") 
-        const password = crypt.decrypt(login.mojang.password);
+        const login = require(dataDirectory + "/" + config.dataDirectory + "/account.json")
 
 
         let opts = {
@@ -41,7 +58,7 @@ function play(){
             overrides: {
                 detached: false
             },
-            authorization: MCAuth.auth(login.mojang.user, password),
+            authorization: login.user,
             root: dataDirectory + "/" + config.dataDirectory,
             version: config.game_version,
             forge: config.forge_version,
@@ -69,7 +86,7 @@ function play(){
       
           launcher.on('verification-status', (e) => {
             console.log("[DOWNLOAD][emc-core-luuxis]: " + e.name + " (" + e.current + "/" + e.total + ")");
-            document.getElementById("bar-txt").innerHTML = "Verification des ressources."
+            document.getElementById("bar-txt").innerHTML = "V\u00e9rification des ressources..."
             progressBar = document.getElementById("progress-bar")
             progressBar.max = e.total;
             progressBar.value = e.current;
@@ -77,14 +94,14 @@ function play(){
       
           launcher.on('download-status', (e) => {
             console.log("[DOWNLOAD][emc-core-luuxis]: [" + e.type + "] " + e.name + " (" + e.downloadedBytes + "/" + e.bytesToDownload + ")");
-            document.getElementById("bar-txt").innerHTML = "Telechargement des ressources."
+            document.getElementById("bar-txt").innerHTML = "Telechargement des ressources..."
             progressBar = document.getElementById("progress-bar")
             progressBar.max = e.bytesToDownload;
             progressBar.value = e.downloadedBytes;
           });
       
           launcher.on('launch', (e) => {
-            document.getElementById("bar-txt").innerHTML = "dont close launcher"
+            document.getElementById("bar-txt").innerHTML = "Ne fermez pas le launcher !"
           });
 
           launcher.on('close', () => {
