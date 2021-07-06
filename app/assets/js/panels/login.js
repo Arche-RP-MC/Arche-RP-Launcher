@@ -16,10 +16,16 @@ function login() {
         const patch = (dataDirectory + "/" + config.dataDirectory)
     
         let data = { 
-          "user": user,
+          "user": {
+            "type": "mojang",
+            "access_token": user.access_token,
+            "client_token": user.client_token,
+            "uuid": user.uuid,
+            "name": user.name
+          }
         }; 
         
-        let dataStringified = JSON.stringify(data);
+        let dataStringified = JSON.stringify(data, null, 2);
         
         if(!fs.existsSync(patch)){
           fs.mkdirSync(patch);
@@ -50,10 +56,13 @@ function login() {
         const patch = (dataDirectory + "/" + config.dataDirectory)
     
         let data = { 
-          "user": user,
+          "user": {
+            "type": "offline",
+            "pseudo": user.name
+          }
         }; 
         
-        let dataStringified = JSON.stringify(data);
+        let dataStringified = JSON.stringify(data, null, 2);
         
         if(!fs.existsSync(patch)){
           fs.mkdirSync(patch);
@@ -77,15 +86,18 @@ function login() {
   function microsoft_account(){
     microsoft.getNWjs().FastLaunch(
       (call) => {
-        config.config().then(config =>{
+        config.config().then(config => {
           const patch = (dataDirectory + "/" + config.dataDirectory)
           const login = (patch + "/account.json" )
       
           let data = { 
-            "user": call,
-          }; 
+            "user": {
+              "type": "xbox",
+              call
+            }
+          };
           
-          let dataStringified = JSON.stringify(data);
+          let dataStringified = JSON.stringify(data, null, 2);
           
           if(!fs.existsSync(patch)){
             fs.mkdirSync(patch);
