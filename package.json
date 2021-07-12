@@ -1,7 +1,7 @@
 {
   "name": "Arche-Launcher",
   "user": "web",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "productName": "Arche Launcher",
   "description": "Arche Launcher",
   "main": "app/index.html",
@@ -32,7 +32,7 @@
   "license": "MIT",
   "build": {
     "appId": "Arche Launcher",
-    "nwVersion": "0.48.4",
+    "nwVersion": "0.54.1",
     "packed": true,
     "targets": [
       "zip",
@@ -73,14 +73,14 @@
     }
   },
   "devDependencies": {
-    "nw": "^0.48.4-sdk",
+    "nw": "^0.54.1-sdk",
     "nwjs-builder-phoenix": "^1.9.3"
   },
   "dependencies": {
     "adm-zip": "^0.4.16",
     "cheerio": "^1.0.0-rc.3",
     "compressjs": "^1.0.2",
-    "emc-core-luuxis": "^1.0.6",
+    "emc-core-luuxis": "^1.0.7",
     "fs": "0.0.1-security",
     "gbxremote": "^0.2.1",
     "got": "^11.5.1",

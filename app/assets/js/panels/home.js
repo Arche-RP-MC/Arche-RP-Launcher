@@ -18,7 +18,6 @@ config.info().then(config => {
         port: config.port
     }).then((state) => {
         status_json = state.raw.vanilla;
-        player = "luuxis"
         document.getElementById("online").innerHTML = status_json.raw.players.online + " joueur(s) actuellement connect\u00e9(s)";
         console.log(status_json.raw.players.online + " joueur(s) actuellement connect\u00e9(s)");
         for (let pas = 0; pas < status_json.raw.players.online; pas++) { 
@@ -53,7 +52,6 @@ function play(){
         document.querySelector(".config").style.display = "none";
         document.querySelector(".info-progress").style.display = "block";
         const max_ram = document.getElementById("ram").value
-        const min_ram = "1" //max_ram - 1
         const login = require(dataDirectory + "/" + config.dataDirectory + "/account.json")
 
         if((login.user.type)  == "mojang") {
@@ -64,6 +62,17 @@ function play(){
           account = microsoft.getMLC().getAuth(login.user.call)
         }
 
+        if(["win32"].includes(process.platform)){
+          console.log("win")
+          os = "javaw.exe"
+        } else if(["darwin"].includes(process.platform)){
+          console.log("mac")
+          os = "javaw"
+        } else if(["linux"].includes(process.platform)){
+          console.log("linux")
+          os = "javaw"
+        }
+
 
         let opts = {
             url: config.game_url,
@@ -72,12 +81,13 @@ function play(){
             },
             authorization: account,
             root: dataDirectory + "/" + config.dataDirectory,
+            javaPath: dataDirectory + "/" + config.dataDirectory + "/runtime/java/bin/" + os,
             version: config.game_version,
             forge: config.forge_version,
             checkFiles: true,
             memory: {
                 max: max_ram + "G",
-                min: min_ram + "G"
+                min: "1G"
             }
         }
         launcher.launch(opts);
@@ -100,16 +110,16 @@ function play(){
             console.log("[vérification][emc-core-luuxis]: " + e.name + " (" + e.current + "/" + e.total + ")");
             document.getElementById("bar-txt").innerHTML = "V\u00e9rification des ressources..."
             progressBar = document.getElementById("progress-bar")
-            progressBar.max = e.total;
             progressBar.value = e.current;
+            progressBar.max = e.total;
           });
       
           launcher.on('download-status', (e) => {
             console.log("[DOWNLOAD][emc-core-luuxis]: [" + e.type + "] " + e.name + " (" + e.downloadedBytes + "/" + e.bytesToDownload + ")");
             document.getElementById("bar-txt").innerHTML = "T\u00e9l\u00e9chargement des ressources..."
             progressBar = document.getElementById("progress-bar")
-            progressBar.max = e.bytesToDownload;
             progressBar.value = e.downloadedBytes;
+            progressBar.max = e.bytesToDownload;
           });
       
           launcher.on('launch', (e) => {
