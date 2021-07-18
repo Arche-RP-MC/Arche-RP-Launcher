@@ -86,15 +86,20 @@ function play(){
 
         if(["win32"].includes(process.platform)){
           console.log("win")
-          os = "javaw.exe"
+          os = "/bin/java.exe"
         } else if(["darwin"].includes(process.platform)){
           console.log("mac")
-          os = "javaw"
+          os = "/Contents/Home/bin/java"
         } else if(["linux"].includes(process.platform)){
           console.log("linux")
-          os = "javaw"
+          os = "/bin/java"
         }
 
+        if ((config.forge_version) == ""){
+          version = config.game_version
+        } else {
+          version = config.forge_version
+        }
 
         let opts = {
             url: config.game_url,
@@ -103,9 +108,9 @@ function play(){
             },
             authorization: account,
             root: dataDirectory + "/" + config.dataDirectory,
-            javaPath: dataDirectory + "/" + config.dataDirectory + "/runtime/java/bin/" + os,
+            javaPath: dataDirectory + "/" + config.dataDirectory + "/runtime/java" + os,
             version: config.game_version,
-            forge: config.forge_version,
+            forge: version,
             checkFiles: true,
             memory: {
                 max: max_ram + "G",
@@ -124,7 +129,7 @@ function play(){
         });
       
         launcher.on('verification-status', (e) => {
-          console.log("[vérification][emc-core-luuxis]: " + e.name + " (" + e.current + "/" + e.total + ")");
+          console.log("[V\u00e9rification][emc-core-luuxis]: " + e.name + " (" + e.current + "/" + e.total + ")");
           document.getElementById("bar-txt").innerHTML = "V\u00e9rification des ressources..."
           progressBar = document.getElementById("progress-bar")
           progressBar.value = e.current;
