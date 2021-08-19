@@ -6,7 +6,7 @@
 
 [<p align="center">
 <img src="https://img.shields.io/badge/build-stable-orange.svg?style=for-the-badge" alt="travis">](https://github.com/luuxis/Arche-Launcher/releases) 
-[<img src="https://img.shields.io/badge/version-v1.0.3-orange.svg?style=for-the-badge" alt="downloads">](https://github.com/luuxis/Arche-Launcher/releases) 
+[<img src="https://img.shields.io/badge/version-v1.0.4-orange.svg?style=for-the-badge" alt="downloads">](https://github.com/luuxis/Arche-Launcher/releases) 
 [<img src="https://img.shields.io/badge/plateforme-win,%20mac,%20linux-blue.svg?style=for-the-badge"  height="28px" alt="stark">](https://github.com/luuxis/Arche-Launcher/releases) </p>
 
 
@@ -56,7 +56,7 @@
 
 - Authentification crack.
 
-- Accepte toutes versions de Minecraft (1.0 > 1.17) (Forge, Fabric etc).
+- Accepte toutes versions de Minecraft (1.0 > 1.17)  (1.7.x ne fonctionne pour le moment pas)(Forge, Fabric etc).
 
 ---
 

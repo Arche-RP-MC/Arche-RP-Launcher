@@ -1,17 +1,25 @@
 const { config, status_server, microsoft } = require('./assets/js/utils.js');
 const { MCLaunch, MCAuth } = require('emc-core-luuxis');
+const os = require("os");
+
 const dataDirectory = process.env.APPDATA || (process.platform == 'darwin' ? process.env.HOME + '/Library/Application Support' : process.env.HOME)
+
 const launcher = new MCLaunch;
 
-function ram() {
-    document.querySelector('.ram').onchange = function() {
-        document.getElementById("ram-text").innerHTML = "M\u00e9moire vive " + this.value + " Go";
-    }
+const totalMem = Math.trunc(os.totalmem() / 1073741824 * 10) / 10;
+const freeMem = Math.trunc(os.freemem() / 1073741824 * 10) / 10;
+
+console.log(totalMem)
+console.log(freeMem)
+
+
+document.querySelector('.ram').onchange = function() {
+  document.getElementById("ram-text").innerHTML = "M\u00e9moire vive " + this.value + " Go";
 }
 
 
+
 config.info().then(config => {
-    ram()
     status_server.query({
         type: 'minecraft',
         host: config.ip_server,
@@ -73,7 +81,7 @@ function play(){
     config.config().then(config => {
         document.querySelector(".config").style.display = "none";
         document.querySelector(".info-progress").style.display = "block";
-        const max_ram = document.getElementById("ram").value
+        const ram = document.getElementById("ram").value
         const login = require(dataDirectory + "/" + config.dataDirectory + "/account.json")
 
         if((login.user.type)  == "mojang") {
@@ -86,13 +94,13 @@ function play(){
 
         if(["win32"].includes(process.platform)){
           console.log("win")
-          os = "/bin/java.exe"
+          java = "/bin/java.exe"
         } else if(["darwin"].includes(process.platform)){
           console.log("mac")
-          os = "/Contents/Home/bin/java"
+          java = "/Contents/Home/bin/java"
         } else if(["linux"].includes(process.platform)){
           console.log("linux")
-          os = "/bin/java"
+          java = "/bin/java"
         }
 
         if ((config.forge_version) == ""){
@@ -108,13 +116,13 @@ function play(){
             },
             authorization: account,
             root: dataDirectory + "/" + config.dataDirectory,
-            javaPath: dataDirectory + "/" + config.dataDirectory + "/runtime/java" + os,
+            javaPath: dataDirectory + "/" + config.dataDirectory + "/runtime/java" + java,
             version: config.game_version,
             forge: version,
             checkFiles: true,
             memory: {
-                max: max_ram + "G",
-                min: "1G"
+                max: ram + "G",
+                min: ram + "G"
             }
         }
         launcher.launch(opts);
